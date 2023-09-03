@@ -8,12 +8,19 @@ Camera::Camera(
 	vec3 origin,
 	vec3 dir,
 	double vofv,
-	double aspect_ratio
+	double aspect_ratio,
+	int samples_per_pixel
 ) : m_origin(origin),
 	m_direction(dir.normalize()),
 	m_vfov(vofv),
-	m_aspect_ratio(aspect_ratio)
+	m_aspect_ratio(aspect_ratio),
+	m_samples_per_pixel(samples_per_pixel)
 {
+}
+
+int Camera::samples() const
+{
+	return m_samples_per_pixel;
 }
 
 ray Camera::get_ray(double u, double v)
