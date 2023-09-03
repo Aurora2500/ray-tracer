@@ -1,4 +1,5 @@
 #include "app.hpp"
+#include "camera.hpp"
 
 int main()
 {

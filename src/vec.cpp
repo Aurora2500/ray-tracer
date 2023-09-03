@@ -137,3 +137,19 @@ std::ostream& operator<<(std::ostream &os, const vec3 &v)
 	os << "(" << v[0] << ", " << v[1] << ", " << v[2] << ")";
 	return os;
 }
+
+double dot(const vec3 &a, const vec3 &b)
+{
+	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+}
+
+vec3 cross(const vec3 &a, const vec3 &b)
+{
+	return vec3(
+		a[1] * b[2] - a[2] * b[1],
+		a[2] * b[0] - a[0] * b[2],
+		a[0] * b[1] - a[1] * b[0]
+	);
+}
+
+const vec3 UP = vec3(0.0f, 0.0f, 1.0f);

@@ -33,7 +33,10 @@ public:
 	double length() const;
 	vec3 normalize() const;
 };
-
 std::ostream& operator<<(std::ostream &os, const vec3 &v);
+double dot(const vec3 &a, const vec3 &b);
+vec3 cross(const vec3 &a, const vec3 &b);
+
+extern const vec3 UP;
 
 #endif

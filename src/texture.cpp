@@ -46,6 +46,10 @@ void Texture::setPixel(size_t x, size_t y, float r, float g, float b) {
 	m_buf[idx+2] = b;
 }
 
+void Texture::setPixel(size_t x, size_t y, vec3 col) {
+	setPixel(x, y, col.x(), col.y(), col.z());
+}
+
 void Texture::bind() {
 	glBindTexture(GL_TEXTURE_2D, m_glTexture);
 }

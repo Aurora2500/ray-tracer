@@ -1,5 +1,7 @@
 #ifndef TEXTURE_HPP_
 #define TEXTURE_HPP_
+#include "vec.hpp"
+
 #include <cstdint>
 #include <stddef.h>
 
@@ -26,6 +28,7 @@ public:
 
 	float& operator[](size_t i) const;
 	void setPixel(size_t x, size_t y, float r, float g, float b);
+	void setPixel(size_t x, size_t y, vec3 col);
 
 	void bind();
 	void unbind();
