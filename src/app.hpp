@@ -7,7 +7,7 @@
 
 class Application {
 private:
-	GLFWwindow *m_window;
+	Renderer m_renderer;
 	Texture m_tex;
 
 public:

@@ -5,16 +5,19 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 
-class Rendered {
+class Renderer {
 private:
+	size_t m_width, m_height;
+	GLuint m_vertexbuffer, m_programID;
 	GLFWwindow *m_window;
 
 public:
-	Rendered();
-	~Rendered();
+	Renderer();
+	~Renderer();
 
+	void set_texture(GLuint texID);
 	void refresh();
-	void should_close();
+	bool should_continue();
 };
 
 #endif
