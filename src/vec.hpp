@@ -9,7 +9,7 @@ private:
 
 public:
 	vec3();
-	vec3(float x, float y, float z);
+	vec3(double x, double y, double z);
 	double x() const;
 	double y() const;
 	double z() const;
@@ -36,6 +36,10 @@ public:
 std::ostream& operator<<(std::ostream &os, const vec3 &v);
 double dot(const vec3 &a, const vec3 &b);
 vec3 cross(const vec3 &a, const vec3 &b);
+
+vec3 random_unit_sphere();
+
+vec3 random_on_hemisphere(const vec3 &normal);
 
 extern const vec3 UP;
 

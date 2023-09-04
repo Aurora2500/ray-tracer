@@ -63,3 +63,10 @@ void Texture::update() {
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB, GL_FLOAT, m_buf);
 	unbind();
 }
+
+void Texture::update(size_t line_offset, size_t line_count) {
+	bind();
+	float *line_buf = m_buf + line_offset * m_width * 3;
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, line_offset, m_width, line_count, GL_RGB, GL_FLOAT, line_buf);
+	unbind();
+}

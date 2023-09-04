@@ -1,13 +1,20 @@
 #include "vec.hpp"
+#include "rand.hpp"
+
 #include <math.h>
+
+const double PI = 3.1415926535897932385;
 
 
 vec3::vec3() : m_buf{0,0,0}
 {
 }
 
-vec3::vec3(float x, float y, float z): m_buf{x,y,z}
+vec3::vec3(double x, double y, double z)
 {
+	m_buf[0] = x;
+	m_buf[1] = y;
+	m_buf[2] = z;
 }
 
 double vec3::x() const
@@ -150,6 +157,28 @@ vec3 cross(const vec3 &a, const vec3 &b)
 		a[2] * b[0] - a[0] * b[2],
 		a[0] * b[1] - a[1] * b[0]
 	);
+}
+
+vec3 random_unit_sphere()
+{
+	double u1 = random_double();
+	double u2 = random_double();
+	double lambda = std::acos(2.0 * u1 - 1.0) - PI / 2.0;
+	double phi = 2.0 * PI * u2;
+	return vec3(
+		std::cos(lambda) * std::cos(phi),
+		std::cos(lambda) * std::sin(phi),
+		std::sin(lambda)
+	);
+}
+
+vec3 random_on_hemisphere(const vec3 &normal)
+{
+	vec3 v = random_unit_sphere();
+	if (dot(v, normal) < 0.0) {
+		return -v;
+	}
+	return v;
 }
 
 const vec3 UP = vec3(0.0f, 0.0f, 1.0f);

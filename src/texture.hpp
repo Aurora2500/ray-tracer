@@ -33,6 +33,7 @@ public:
 	void bind();
 	void unbind();
 	void update();
+	void update(size_t line_offset, size_t line_count);
 };
 
 #endif
