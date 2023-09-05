@@ -7,7 +7,7 @@ file(GLOB SRC "src/*.cpp")
 add_executable(App ${SRC} "glad/src/glad.c")
 
 set_target_properties(App PROPERTIES
-	CXX_STANDARD 17
+	CXX_STANDARD 20
 )
 
 add_subdirectory(glfw)

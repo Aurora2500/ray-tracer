@@ -1,5 +1,6 @@
 #include "interval.hpp"
 #include <cmath>
+#include <algorithm>
 
 interval::interval()
 	: min(+INFINITY), max(-INFINITY)
