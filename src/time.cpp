@@ -50,7 +50,7 @@ void Stopwatch::stop()
 		<< "ms with a variance of "
 		<< m_var
 		<< "ms"
-		<< "for a total of "
+		<< " for a total of "
 		<< m_mean * m_laps
 		<< "ms"
 		<< std::endl;

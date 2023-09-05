@@ -17,6 +17,7 @@ public:
 
 	void set_texture(GLuint texID);
 	void refresh();
+	void poll_events();
 	bool should_continue();
 };
 

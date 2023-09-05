@@ -161,6 +161,15 @@ Renderer::Renderer()
 
 	m_programID = LoadShaders("shaders/vertex.glsl", "shaders/fragment.glsl");
 	glUseProgram(m_programID);
+
+	glfwSetMouseButtonCallback(m_window, [](GLFWwindow *window, int button, int action, int mods) {
+		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+		{
+			double x, y;
+			glfwGetCursorPos(window, &x, &y);
+			std::cout << "Mouse clicked at " << x << ", " << y << std::endl;
+		}
+	});
 }
 
 Renderer::~Renderer()
@@ -193,6 +202,11 @@ void Renderer::refresh()
 	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
 	glfwSwapBuffers(m_window);
+	glfwPollEvents();
+}
+
+void Renderer::poll_events()
+{
 	glfwPollEvents();
 }
 

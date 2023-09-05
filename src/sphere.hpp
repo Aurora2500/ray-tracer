@@ -11,10 +11,12 @@ private:
 	vec3 m_center;
 	double m_radius;
 	std::shared_ptr<material> m_mat_ptr;
+	aabb m_bbox;
 
 public:
 	sphere(vec3 center, double radius, std::shared_ptr<material> mat_ptr);
 	bool hit(const ray &r, interval t_lim, hit_record &rec) const override;
+	aabb bounding_box() const override;
 };
 
 #endif
