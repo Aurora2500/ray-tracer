@@ -32,6 +32,8 @@ public:
 
 	double length() const;
 	vec3 normalize() const;
+
+	bool near_zero() const;
 };
 std::ostream& operator<<(std::ostream &os, const vec3 &v);
 double dot(const vec3 &a, const vec3 &b);
@@ -40,6 +42,8 @@ vec3 cross(const vec3 &a, const vec3 &b);
 vec3 random_unit_sphere();
 
 vec3 random_on_hemisphere(const vec3 &normal);
+
+vec3 reflect(const vec3 &v, const vec3 &n);
 
 extern const vec3 UP;
 

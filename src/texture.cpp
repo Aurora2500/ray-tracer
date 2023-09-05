@@ -1,4 +1,5 @@
 #include "texture.hpp"
+#include <cmath>
 
 Texture::Texture(size_t width, size_t height)
 	: m_width(width), m_height(height), m_buf(new float[width * height * 3])
@@ -41,9 +42,9 @@ float& Texture::operator[](size_t i) const {
 
 void Texture::setPixel(size_t x, size_t y, float r, float g, float b) {
 	int idx = (x + y * m_width) * 3;
-	m_buf[idx] = r;
-	m_buf[idx+1] = g;
-	m_buf[idx+2] = b;
+	m_buf[idx] = std::sqrt(r);
+	m_buf[idx+1] = std::sqrt(g);
+	m_buf[idx+2] = std::sqrt(b);
 }
 
 void Texture::setPixel(size_t x, size_t y, vec3 col) {

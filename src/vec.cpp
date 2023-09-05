@@ -5,6 +5,8 @@
 
 const double PI = 3.1415926535897932385;
 
+const double EPSILON = 1e-8;
+
 
 vec3::vec3() : m_buf{0,0,0}
 {
@@ -137,6 +139,11 @@ vec3 vec3::normalize() const
 	return (*this) / (length());
 }
 
+bool vec3::near_zero() const
+{
+	return dot(*this, *this) < EPSILON;
+}
+
 #include <iostream>
 
 std::ostream& operator<<(std::ostream &os, const vec3 &v)
@@ -179,6 +186,11 @@ vec3 random_on_hemisphere(const vec3 &normal)
 		return -v;
 	}
 	return v;
+}
+
+vec3 reflect(const vec3 &v, const vec3 &n)
+{
+	return v - n * 2.0 * dot(v, n);
 }
 
 const vec3 UP = vec3(0.0f, 0.0f, 1.0f);

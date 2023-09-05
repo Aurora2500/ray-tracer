@@ -1,8 +1,8 @@
 #include "sphere.hpp"
 #include <cmath>
 
-sphere::sphere(vec3 center, double radius)
-	: m_center(center), m_radius(radius)
+sphere::sphere(vec3 center, double radius, std::shared_ptr<material> mat_ptr)
+	: m_center(center), m_radius(radius), m_mat_ptr(mat_ptr)
 {
 }
 
@@ -28,6 +28,7 @@ bool sphere::hit(const ray &r, interval t_lim, hit_record &rec) const
 	rec.t = root;
 	rec.p = r.at(rec.t);
 	rec.normal = (rec.p - m_center) / m_radius;
+	rec.mat_ptr = m_mat_ptr;
 
 	return true;
 }

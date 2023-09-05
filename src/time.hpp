@@ -4,6 +4,16 @@
 #include <string>
 #include <chrono>
 
+class Timer {
+private:
+	std::chrono::time_point<std::chrono::steady_clock> m_last;
+	std::chrono::duration<double, std::milli> m_period;
+
+public:
+	Timer(std::chrono::duration<double> period);
+	bool tick();
+};
+
 class Stopwatch {
 private:
 	std::string m_label;

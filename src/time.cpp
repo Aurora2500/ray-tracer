@@ -55,3 +55,20 @@ void Stopwatch::stop()
 		<< "ms"
 		<< std::endl;
 }
+
+Timer::Timer(std::chrono::duration<double> period)
+	: m_period(period)
+{
+	m_last = std::chrono::steady_clock::now();
+}
+
+bool Timer::tick()
+{
+	auto now = std::chrono::steady_clock::now();
+	auto diff = now - m_last;
+	if (diff > m_period) {
+		m_last = now;
+		return true;
+	}
+	return false;
+}
