@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <GL/glew.h>
+#include <glad.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include "app.hpp"

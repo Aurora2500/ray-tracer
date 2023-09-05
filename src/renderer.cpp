@@ -144,8 +144,7 @@ Renderer::Renderer()
 	glfwMakeContextCurrent(m_window);
 
 
-	glewExperimental = GL_TRUE;
-	glewInit();
+	gladLoadGL();
 	glViewport(0, 0, m_width, m_height);
 
 	GLuint VertexArrayID;
