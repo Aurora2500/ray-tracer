@@ -4,6 +4,8 @@
 sphere::sphere(vec3 center, double radius, std::shared_ptr<material> mat_ptr)
 	: m_center(center), m_radius(radius), m_mat_ptr(mat_ptr)
 {
+	vec3 rvec = vec3(radius, radius, radius);
+	m_bbox = aabb(center - rvec, center + rvec);
 }
 
 bool sphere::hit(const ray &r, interval t_lim, hit_record &rec) const
@@ -31,4 +33,9 @@ bool sphere::hit(const ray &r, interval t_lim, hit_record &rec) const
 	rec.mat_ptr = m_mat_ptr;
 
 	return true;
+}
+
+aabb sphere::bounding_box() const
+{
+	return m_bbox;
 }
