@@ -11,7 +11,9 @@ set_target_properties(App PROPERTIES
 )
 
 add_subdirectory(glfw)
+add_subdirectory(glm)
 target_link_libraries(App glfw)
+target_link_libraries(App glm)
 
 include_directories("glad/include")
 target_link_libraries(App ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
