@@ -1,8 +1,8 @@
 #ifndef RENDERER_HPP_
 #define RENDERER_HPP_
 
-#include <GL/glew.h>
-#include <GL/gl.h>
+#include <glad.h>
+#include <glad.h>
 #include <GLFW/glfw3.h>
 
 class Renderer {

@@ -5,8 +5,7 @@
 #include <cstdint>
 #include <stddef.h>
 
-#include<GL/glew.h>
-#include<GL/gl.h>
+#include <glad.h>
 
 class Texture {
 private:
