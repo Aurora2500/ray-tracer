@@ -16,8 +16,7 @@ bvh_node::bvh_node(const std::vector<std::shared_ptr<hittable>> &src_objects, in
 	auto objects = src_objects;
 	size_t span = end - start;
 
-	auto comparator =
-		axis == 0 ? comparator_x
+	auto comparator = axis == 0 ? comparator_x
 		: axis == 1 ? comparator_y
 		: comparator_z;
 
@@ -38,6 +37,42 @@ bvh_node::bvh_node(const std::vector<std::shared_ptr<hittable>> &src_objects, in
 		m_left = std::make_shared<bvh_node>(objects, start, mid, (axis + 1) % 3);
 		m_right = std::make_shared<bvh_node>(objects, mid, end, (axis + 1) % 3);
 	}
+	/* 
+	if(objects.size() == 1)
+	{
+		m_left = m_right = objects[0];
+	} else {
+		std::vector<std::shared_ptr<hittable>> left_objects, right_objects;
+		{
+			auto fitness = [&objects](const std::vector<bool>& individual) -> float {
+				aabb left, right;
+				for(int i = 0; i < individual.size(); i++)
+				{
+					if(individual[i]) {
+						left = aabb(left, objects[i]->bounding_box());
+					} else {
+						right = aabb(right, objects[i]->bounding_box());
+					}
+				}
+				return - (left.volume() * left.volume() + right.volume() * right.volume());
+			};
+			ga::BinaryAlgorithm optimizer(30, objects.size(), fitness, 0.1, 0.2);
+			optimizer.init();
+			optimizer.run(50);
+			std::vector<bool> solution = optimizer.hof();
+			// std::cout << "solution size: " << solution.size() << std::endl;
+			for(int i = 0; i < objects.size(); i++) {
+				if(solution[i]) {
+					left_objects.push_back(objects[i]);
+				} else {
+					right_objects.push_back(objects[i]);
+				}
+			}
+		}
+		m_left = std::make_shared<bvh_node>(left_objects, 0, 0);
+		m_right = std::make_shared<bvh_node>(right_objects, 0, 0);
+	}
+	*/
 
 	m_bbox = aabb(m_left->bounding_box(), m_right->bounding_box());
 }

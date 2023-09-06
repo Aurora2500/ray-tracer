@@ -11,6 +11,7 @@ struct interval {
 	bool containsClosed(double x) const;
 	double clamp(double x) const;
 	interval expand(double delta) const;
+	double size() const;
 };
 
 #endif

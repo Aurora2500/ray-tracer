@@ -31,6 +31,7 @@ aabb hittable_list::bounding_box() const
 
 void hittable_list::bake()
 {
+	std::cout << "baking world of " << m_objects.size() << " elements" << std::endl;
 	auto bvh_root = std::make_shared<bvh_node>(m_objects, 0, m_objects.size());
 	m_objects.clear();
 	m_objects.push_back(bvh_root);

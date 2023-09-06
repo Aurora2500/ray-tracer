@@ -58,6 +58,11 @@ bool aabb::hit(const ray &r, interval ray_t) const
 	return true;
 }
 
+double aabb::volume() const
+{
+	return x.size() * y.size() * z.size();
+}
+
 std::ostream &operator<<(std::ostream &os, const aabb &a)
 {
 	os << "aabb(" << a.x.min << ", " << a.y.min << ", " << a.z.min << ")"

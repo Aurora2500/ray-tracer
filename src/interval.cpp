@@ -39,3 +39,9 @@ interval interval::expand(double delta) const
 	double padding = delta / 2.0;
 	return interval(min - padding, max + padding);
 }
+
+double interval::size() const
+{
+	if (max <= min) return 0.0;
+	return max - min;
+}

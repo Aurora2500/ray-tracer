@@ -18,6 +18,8 @@ public:
 	const interval& axis(int n) const;
 
 	bool hit(const ray& r, interval ray_t) const;
+
+	double volume() const;
 };
 
 std::ostream &operator<<(std::ostream &os, const aabb &a);
