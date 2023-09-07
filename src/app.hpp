@@ -2,13 +2,13 @@
 #define APP_HPP_
 
 #include "renderer.hpp"
-#include "texture.hpp"
+#include "canvas.hpp"
 #include <GLFW/glfw3.h>
 
 class Application {
 private:
 	Renderer m_renderer;
-	Texture m_tex;
+	Canvas m_canvas;
 
 public:
 	Application();

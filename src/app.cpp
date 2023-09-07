@@ -31,9 +31,9 @@ vec3 ray_col(const ray& r, const hittable& world, int depth) {
 }
 
 Application::Application()
-	: m_renderer(),  m_tex(1920, 1080)
+	: m_renderer(),  m_canvas(1920, 1080)
 {
-	m_tex.init();
+	m_canvas.init();
 }
 
 Application::~Application()
@@ -43,7 +43,7 @@ Application::~Application()
 
 
 void Application::run() {
-	GLuint texID = m_tex.glTexture();
+	GLuint texID = m_canvas.glTexture();
 
 	vec3 cam_pos(13, 3, 2);
 
@@ -116,8 +116,8 @@ void Application::run() {
 
 	ray r;
 
-	double dX = (2 / (double)m_tex.width());
-	double dY = (2 / (double)m_tex.height());
+	double dX = (2 / (double)m_canvas.width());
+	double dY = (2 / (double)m_canvas.height());
 
 	const int scanline_height = 10;
 
@@ -129,10 +129,10 @@ void Application::run() {
 
 	Timer timer_render(std::chrono::milliseconds(1000 / 20));
 
-	for(int y = 0; y < m_tex.height(); y++) {
+	for(int y = 0; y < m_canvas.height(); y++) {
 		std::cout << "line " << y << std::endl;
 		sw_line_render.start();
-		for(int x = 0; x < m_tex.width(); x++) {
+		for(int x = 0; x < m_canvas.width(); x++) {
 			if(timer_render.tick()) {
 				if(!m_renderer.should_continue()) {
 					return;
@@ -143,8 +143,8 @@ void Application::run() {
 			if (x == 1020 && y == (1030 - 720)) {
 				int mm_a = 0;
 			}
-			double u = (double)x / (double)m_tex.width() * 2.0 - 1.0;
-			double v = (double)y / (double)m_tex.height() * 2.0 - 1.0;
+			double u = (double)x / (double)m_canvas.width() * 2.0 - 1.0;
+			double v = (double)y / (double)m_canvas.height() * 2.0 - 1.0;
 			vec3 col = vec3(0.0, 0.0, 0.0);
 			for (int i = 0; i < c.samples(); i++) {
 				double dx = (random_double() - 0.5);
@@ -155,12 +155,12 @@ void Application::run() {
 				col += ray_col(r, world, 0);
 			}
 			col /= c.samples();
-			m_tex.setPixel(x, y, col);
+			m_canvas.setPixel(x, y, col);
 		}
 		sw_line_render.lap();
 		if (y % scanline_height == 0 && y != 0) {
 			sw_refresh.start();
-			m_tex.update(y-scanline_height, scanline_height);
+			m_canvas.update(y-scanline_height, scanline_height);
 			m_renderer.set_texture(texID);
 			m_renderer.refresh();
 			if (!m_renderer.should_continue()) {
@@ -169,11 +169,11 @@ void Application::run() {
 			sw_refresh.lap();
 		}
 	}
-	int last_count = ((m_tex.height()-1) % scanline_height) + 1;
-	int last_line = m_tex.height() - last_count;
+	int last_count = ((m_canvas.height()-1) % scanline_height) + 1;
+	int last_line = m_canvas.height() - last_count;
 	sw_refresh.start();
 
-	m_tex.update(last_line, last_count);
+	m_canvas.update(last_line, last_count);
 	m_renderer.set_texture(texID);
 	sw_refresh.lap();
 

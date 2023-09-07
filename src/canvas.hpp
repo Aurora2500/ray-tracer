@@ -1,5 +1,5 @@
-#ifndef TEXTURE_HPP_
-#define TEXTURE_HPP_
+#ifndef CANVAS_HPP_
+#define CANVAS_HPP_
 #include "vec.hpp"
 
 #include <cstdint>
@@ -7,16 +7,16 @@
 
 #include <glad.h>
 
-class Texture {
+class Canvas {
 private:
 	float *m_buf;
 	size_t m_width, m_height;
 	GLuint m_glTexture;
 	
 public:
-	Texture() = delete;
-	Texture(size_t width, size_t height);
-	~Texture();
+	Canvas() = delete;
+	Canvas(size_t width, size_t height);
+	~Canvas();
 
 	void init();
 
