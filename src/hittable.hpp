@@ -12,6 +12,7 @@ struct hit_record {
 	vec3 p, normal;
 	double t;
 	std::shared_ptr<material> mat_ptr;
+	double u, v;
 };
 
 class hittable {

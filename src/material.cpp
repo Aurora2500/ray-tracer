@@ -2,6 +2,11 @@
 #include "vec.hpp"
 
 lambertian::lambertian(const vec3 &albedo)
+	: lambertian(std::make_shared<solid_color>(albedo))
+{
+}
+
+lambertian::lambertian(std::shared_ptr<texture> albedo)
 	: m_albedo(albedo)
 {
 }
@@ -12,7 +17,7 @@ bool lambertian::scatter(const ray &r_in, const hit_record &rec, vec3 &attenuati
 	if(scatter_direction.near_zero())
 		scatter_direction = rec.normal;
 	scattered = ray(rec.p, scatter_direction);
-	attenuation = m_albedo;
+	attenuation = m_albedo->value(rec.u, rec.v, rec.p);
 	return true;
 }
 

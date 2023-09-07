@@ -9,6 +9,7 @@
 #include "rand.hpp"
 #include "time.hpp"
 #include "material.hpp"
+#include "texture.hpp"
 #include <cmath>
 #include <memory>
 
@@ -52,14 +53,16 @@ void Application::run() {
 		-cam_pos,
 		65.0f,
 		(1920.0f / 1080.0f),
-		50
+		20
 	);
 
 	hittable_list world;
 
 	std::cout << "Generating world..." << std::endl;
 
-	auto mat_ground = std::make_shared<lambertian>(vec3(0.8, 0.8, 0.0));
+	auto checker = std::make_shared<checker_texture>(1/0.32, vec3(0.2, 0.3, 0.1), vec3(0.9, 0.9, 0.9));
+
+	auto mat_ground = std::make_shared<lambertian>(checker);
 
 	world.add(std::make_shared<sphere>(vec3(0, 0, -1000), 1000, mat_ground));
 
