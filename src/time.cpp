@@ -4,11 +4,13 @@
 Stopwatch::Stopwatch()
 	: m_label("Stopwatch"), m_laps(0), m_mean(0.0), m_var(0.0)
 {
+	start();
 }
 
 Stopwatch::Stopwatch(std::string label)
 	: m_label(label), m_laps(0), m_mean(0.0), m_var(0.0)
 {
+	start();
 }
 
 void Stopwatch::start()
@@ -36,7 +38,7 @@ void Stopwatch::stop()
 			<< m_label
 			<< " took "
 			<< duration.count()
-			<< "seconds"
+			<< " seconds"
 			<< std::endl;
 		return;
 	}
