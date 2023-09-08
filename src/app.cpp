@@ -5,7 +5,6 @@
 #include "material.hpp"
 #include <memory>
 #include "rand.hpp"
-#include "raytrace_scene.hpp"
 
 
 Application::Application()
@@ -35,22 +34,9 @@ void Application::run() {
 	world.add(std::make_shared<sphere>(vec3(0.7, 0.2, 0), 0.5, mat_three));
 	*/
 	
-	float* buffer = new float[Config::WIDTH * Config::HEIGHT * 3];
-
 	Stopwatch timer("Render");
-	raytrace_scene(scene, buffer);
+	scene.render(m_canvas);
 	timer.stop();
-
-	for (int y = 0; y < Config::HEIGHT; y++) {
-		for (int x = 0; x < Config::WIDTH; x++) {
-			int idx = (x + y * Config::WIDTH) * 3;
-			float r = buffer[idx];
-			float g = buffer[idx + 1];
-			float b = buffer[idx + 2];
-			vec3 col(r, g, b);
-			m_canvas.setPixel(x, y, col);
-		}
-	}
 
 	m_canvas.update();
 	m_renderer.set_texture(texID);
@@ -59,6 +45,4 @@ void Application::run() {
 	{
 		m_renderer.refresh();
 	}
-
-	delete[] buffer;
 }
