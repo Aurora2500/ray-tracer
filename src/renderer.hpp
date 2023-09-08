@@ -3,21 +3,13 @@
 
 #include <glad.h>
 #include <GLFW/glfw3.h>
+#include "canvas.hpp"
 
 class Renderer {
-private:
-	size_t m_width, m_height;
-	GLuint m_vertexbuffer, m_programID;
-	GLFWwindow *m_window;
-
 public:
-	Renderer();
-	~Renderer();
-
-	void set_texture(GLuint texID);
-	void refresh();
-	void poll_events();
-	bool should_continue();
+	virtual ~Renderer() = default;
+	virtual Canvas& canvas() = 0;
+	virtual void finish() = 0;
 };
 
 #endif

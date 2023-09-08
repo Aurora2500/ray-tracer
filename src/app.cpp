@@ -7,21 +7,12 @@
 #include "rand.hpp"
 
 
-Application::Application()
-	: m_renderer(),  m_canvas(Config::WIDTH, Config::HEIGHT)
+Application::Application(std::unique_ptr<Renderer> renderer)
+	: m_renderer(std::move(renderer))
 {
-	m_canvas.init();
 }
-
-Application::~Application()
-{
-	glfwTerminate();
-}
-
 
 void Application::run() {
-	GLuint texID = m_canvas.glTexture();
-
 	Scene scene;
 
 	/*
@@ -35,14 +26,10 @@ void Application::run() {
 	*/
 	
 	Stopwatch timer("Render");
-	scene.render(m_canvas);
+	scene.render(*m_renderer);
 	timer.stop();
 
-	m_canvas.update();
-	m_renderer.set_texture(texID);
-
-	while (m_renderer.should_continue())
-	{
-		m_renderer.refresh();
-	}
+	// m_canvas.update();
+	// m_renderer.set_texture(texID);
+	m_renderer->finish();
 }

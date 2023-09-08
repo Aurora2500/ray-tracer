@@ -1,3 +1,4 @@
+#include "gl_renderer.hpp"
 #include "renderer.hpp"
 #include <cstdlib>
 #include <vector>
@@ -124,9 +125,47 @@ GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path)
 	return ProgramID;
 }
 
+GLCanvas::GLCanvas(size_t width, size_t height)
+	: Canvas(width, height)
+{
+}
 
-Renderer::Renderer()
-	: m_width(Config::WIDTH), m_height(Config::HEIGHT)
+void GLCanvas::init()
+{
+	glGenTextures(1, &m_glTexture);
+	bind();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_FLOAT, nullptr);
+	unbind();
+}
+
+void GLCanvas::bind() {
+	glBindTexture(GL_TEXTURE_2D, m_glTexture);
+}
+
+void GLCanvas::unbind() {
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void GLCanvas::update() {
+	bind();
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB, GL_FLOAT, m_buf.data());
+	unbind();
+}
+
+void GLCanvas::update(size_t line_offset, size_t line_count) {
+	bind();
+	float *line_buf = m_buf.data() + line_offset * m_width * 3;
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, line_offset, m_width, line_count, GL_RGB, GL_FLOAT, line_buf);
+	unbind();
+}
+
+GLRenderer::GLRenderer()
+	: m_width(Config::WIDTH), m_height(Config::HEIGHT), m_canvas(Config::WIDTH, Config::HEIGHT)
 {
 	if (glfwInit() == GLFW_FALSE)
 	{
@@ -171,21 +210,23 @@ Renderer::Renderer()
 			std::cout << "Mouse clicked at " << x << ", " << y << std::endl;
 		}
 	});
+
+	m_canvas.init();
 }
 
-Renderer::~Renderer()
+GLRenderer::~GLRenderer()
 {
 	glfwTerminate();
 }
 
-void Renderer::set_texture(GLuint texID)
+void GLRenderer::set_texture(GLuint texID)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID);
 	glUniform1i(glGetUniformLocation(m_programID, "tex"), 0);
 }
 
-void Renderer::refresh()
+void GLRenderer::refresh()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// 1st attribute buffer : vertices
@@ -206,12 +247,28 @@ void Renderer::refresh()
 	glfwPollEvents();
 }
 
-void Renderer::poll_events()
+void GLRenderer::poll_events()
 {
 	glfwPollEvents();
 }
 
-bool Renderer::should_continue()
+bool GLRenderer::should_continue()
 {
 	return !glfwWindowShouldClose(m_window) && glfwGetKey(m_window, GLFW_KEY_ESCAPE) != GLFW_PRESS;
+}
+
+Canvas &GLRenderer::canvas()
+{
+	return m_canvas;
+}
+
+void GLRenderer::finish()
+{
+	m_canvas.update();
+	set_texture(m_canvas.m_glTexture);
+
+	while(should_continue())
+	{
+		refresh();
+	}
 }

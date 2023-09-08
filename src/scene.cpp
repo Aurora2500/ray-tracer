@@ -74,9 +74,10 @@ Scene::Scene()
 
 
 
-void Scene::render(Canvas &canvas) const
+void Scene::render(Renderer &renderer) const
 {
 	ray r;
+	Canvas &canvas = renderer.canvas();
 
 	double dX = 2 / (double)Config::WIDTH;
 	double dY = 2 / (double)Config::HEIGHT;

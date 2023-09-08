@@ -2,7 +2,7 @@
 #include "camera.hpp"
 #include "config.hpp"
 #include "hittable_list.hpp"
-#include "canvas.hpp"
+#include "renderer.hpp"
 
 class Scene {
 private:
@@ -13,5 +13,5 @@ private:
 
 public:
 	Scene();
-	void render(Canvas &canvas) const;
+	void render(Renderer &renderer) const;
 };

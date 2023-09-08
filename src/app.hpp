@@ -4,15 +4,15 @@
 #include "renderer.hpp"
 #include "canvas.hpp"
 #include <GLFW/glfw3.h>
+#include <memory>
 
 class Application {
 private:
-	Renderer m_renderer;
-	Canvas m_canvas;
+	std::unique_ptr<Renderer> m_renderer;
 
 public:
-	Application();
-	~Application();
+	Application() = delete;
+	Application(std::unique_ptr<Renderer> renderer);
 
 	void run();
 };
