@@ -13,14 +13,8 @@ Camera::Camera(
 ) : m_origin(origin),
 	m_direction(dir.normalize()),
 	m_vfov(vofv),
-	m_aspect_ratio(aspect_ratio),
-	m_samples_per_pixel(samples_per_pixel)
+	m_aspect_ratio(aspect_ratio)
 {
-}
-
-int Camera::samples() const
-{
-	return m_samples_per_pixel;
 }
 
 ray Camera::get_ray(double u, double v)
