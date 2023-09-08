@@ -10,13 +10,12 @@
 #include "time.hpp"
 #include "material.hpp"
 #include "texture.hpp"
+#include "config.hpp"
 #include <cmath>
 #include <memory>
 
-const int max_depth = 50;
-
 vec3 ray_col(const ray& r, const hittable& world, int depth) {
-	if (depth >= max_depth) return vec3();
+	if (depth >= Config::MAX_DEPTH) return vec3();
 	hit_record rec;
 	if (world.hit(r, interval(0.00001, INFINITY), rec)) {
 		ray scattered;
@@ -32,7 +31,7 @@ vec3 ray_col(const ray& r, const hittable& world, int depth) {
 }
 
 Application::Application()
-	: m_renderer(),  m_canvas(1920, 1080)
+	: m_renderer(),  m_canvas(Config::WIDTH, Config::HEIGHT)
 {
 	m_canvas.init();
 }
@@ -52,8 +51,8 @@ void Application::run() {
 		cam_pos,
 		-cam_pos,
 		65.0f,
-		(1920.0f / 1080.0f),
-		20
+		(Config::WIDTH / (float)Config::HEIGHT),
+		Config::RAYS_PER_PIXEL
 	);
 
 	hittable_list world;
