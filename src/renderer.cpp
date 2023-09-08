@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include "config.hpp"
 
 static const GLfloat g_vertex_buffer_data[] = {
 		-1.0f,
@@ -125,7 +126,7 @@ GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path)
 
 
 Renderer::Renderer()
-	: m_width(1920), m_height(1080)
+	: m_width(Config::WIDTH), m_height(Config::HEIGHT)
 {
 	if (glfwInit() == GLFW_FALSE)
 	{

@@ -1,5 +1,9 @@
 #include "sphere.hpp"
-#include <cmath>
+// Must define _USE_MATH_DEFINES and include math.h(instead of cmath) in order to access M_PI on windows
+#if defined(WIN32)
+	#define _USE_MATH_DEFINES
+#endif
+#include <math.h>
 
 void sphere_uv(const vec3 &p, double &u, double &v)
 {
