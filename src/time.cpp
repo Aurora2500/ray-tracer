@@ -35,8 +35,8 @@ void Stopwatch::stop()
 			<< "Stopwatch "
 			<< m_label
 			<< " took "
-			<< duration.count() * 1000.0
-			<< "ms"
+			<< duration.count()
+			<< "seconds"
 			<< std::endl;
 		return;
 	}
