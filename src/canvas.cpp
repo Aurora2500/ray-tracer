@@ -4,7 +4,6 @@
 Canvas::Canvas(size_t width, size_t height)
 	: m_width(width), m_height(height), m_buf(new float[width * height * 3])
 {
-
 }
 
 Canvas::~Canvas()

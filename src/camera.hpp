@@ -12,7 +12,7 @@ private:
 public:
 	Camera(vec3 origin, vec3 dir, double vfov, double aspect_ratio, int samples_per_pixel);
 
-	ray get_ray(double u, double v);
+	ray get_ray(double u, double v) const;
 };
 
 #endif

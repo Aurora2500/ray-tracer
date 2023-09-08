@@ -17,7 +17,7 @@ Camera::Camera(
 {
 }
 
-ray Camera::get_ray(double u, double v)
+ray Camera::get_ray(double u, double v) const
 {
 	vec3 right = cross(m_direction, UP);
 	vec3 up = cross(right, m_direction);
