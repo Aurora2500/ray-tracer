@@ -17,6 +17,7 @@ public:
 
 	virtual void add_subscription(RendererSubscription& subscription)
 	{
+		(void) subscription;
 	}
 
 	// This function "finishes" the rendering, in the case of a png renderer it would write it to a file, in the openGL renderer it polls the window in a loop

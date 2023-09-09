@@ -18,7 +18,7 @@ uint8_t* Canvas::getData() const {
 	return (uint8_t*)m_buf.data();
 }
 
-const float& Canvas::operator[](size_t i) const {
+const uint8_t& Canvas::operator[](size_t i) const {
 	return m_buf[i];
 }
 

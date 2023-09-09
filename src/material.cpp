@@ -13,6 +13,7 @@ lambertian::lambertian(std::shared_ptr<texture> albedo)
 
 bool lambertian::scatter(const ray &r_in, const hit_record &rec, vec3 &attenuation, ray &scattered) const
 {
+	(void) r_in;
 	vec3 scatter_direction = rec.normal + random_unit_sphere();
 	if(scatter_direction.near_zero())
 		scatter_direction = rec.normal;

@@ -32,10 +32,8 @@ public:
 		m_num_running = num_threads;
 		auto [tx, rx] = channel<T>();
 		m_sender = tx;
-		int i = 0;
 		for (auto& thread : m_threads) {
-			i++;
-			thread = std::thread([rx, i, this]() {
+			thread = std::thread([rx, this]() {
 				// TODO: fix this data race
 				// without the sleep some threads end early, making it not use all of the CPU.
 				std::this_thread::sleep_for(std::chrono::milliseconds(200));

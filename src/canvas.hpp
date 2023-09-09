@@ -10,8 +10,8 @@
 
 class Canvas {
 protected:
-	std::vector<uint8_t> m_buf;
 	size_t m_width, m_height;
+	std::vector<uint8_t> m_buf;
 	
 public:
 	Canvas() = delete;
@@ -22,7 +22,7 @@ public:
 	size_t height() const;
 
 	uint8_t* getData() const;
-	const float& operator[](size_t i) const;
+	const uint8_t& operator[](size_t i) const;
 	void setPixel(size_t x, size_t y, float r, float g, float b);
 	void setPixel(size_t x, size_t y, vec3 col);
 };

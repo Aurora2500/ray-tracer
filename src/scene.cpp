@@ -30,8 +30,7 @@ Scene::Scene()
 	 vec3(13, 3, 2),
 	 -vec3(13, 3, 2),
 	 65.0f,
-	 Config::WIDTH / (float)Config::HEIGHT,
-	 Config::RAYS_PER_PIXEL
+	 Config::WIDTH / (float)Config::HEIGHT
 	)
 {
 	std::cout << "Generating world..." << std::endl;
@@ -105,7 +104,7 @@ void Scene::render(Renderer &renderer) const
 					double dx = (random_double() - 0.5);
 					double dy = (random_double() - 0.5);
 					double du = dx * dX;
-					double dv = dy * dX;
+					double dv = dy * dY;
 					ray r = m_camera.get_ray(u + du, v + dv);
 					col += ray_col(r, 0);
 				}

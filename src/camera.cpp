@@ -8,8 +8,7 @@ Camera::Camera(
 	vec3 origin,
 	vec3 dir,
 	double vofv,
-	double aspect_ratio,
-	int samples_per_pixel
+	double aspect_ratio
 ) : m_origin(origin),
 	m_direction(dir.normalize()),
 	m_vfov(vofv),

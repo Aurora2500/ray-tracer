@@ -13,6 +13,9 @@ solid_color::solid_color(double r, double g, double b)
 }
 
 vec3 solid_color::value(double u, double v, const vec3& p) const {
+	(void) u;
+	(void) v;
+	(void) p;
 	return m_color;
 }
 

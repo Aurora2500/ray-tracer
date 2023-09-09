@@ -210,6 +210,7 @@ GLRenderer::GLRenderer()
 	glUseProgram(m_programID);
 
 	glfwSetMouseButtonCallback(m_window, [](GLFWwindow *window, int button, int action, int mods) {
+		(void) mods;
 		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 		{
 			double x, y;
