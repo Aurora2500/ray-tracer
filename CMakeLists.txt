@@ -16,7 +16,7 @@ target_link_libraries(App glfw)
 target_link_libraries(App glm)
 
 if(MSVC)
-  target_compile_options(App PRIVATE /W4 /WX)
+  target_compile_options(App PRIVATE)
 else()
   target_compile_options(App PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
