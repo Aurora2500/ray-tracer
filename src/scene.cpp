@@ -3,6 +3,8 @@
 #include "texture.hpp"
 #include "material.hpp"
 #include "quad.hpp"
+
+#include "channel.hpp"
 #include <cmath>
 
 vec3 Scene::ray_col(const ray &r, int depth) const
@@ -77,32 +79,72 @@ Scene::Scene()
 	m_world.bake();
 }
 
+struct RenderJob {
+	int x;
+	int y;
+};
 
 
 void Scene::render(Renderer &renderer) const
 {
-	ray r;
 	Canvas &canvas = renderer.canvas();
 
-	double dX = 2 / (double)Config::WIDTH;
-	double dY = 2 / (double)Config::HEIGHT;
+	std::vector<std::thread> threads(Config::THREADS);
 
-	for (int y = 0; y < Config::HEIGHT; y++) {
-		std::cout << "line " << y << std::endl;
-		for (int x = 0; x < Config::WIDTH; x++) {
-			double u = (double)x / (double)Config::WIDTH * 2.0 - 1.0;
-			double v = (double)y / (double)Config::HEIGHT * 2.0 - 1.0;
-			vec3 col = vec3(0.0, 0.0, 0.0);
-			for (int i = 0; i < Config::RAYS_PER_PIXEL; i++) {
-				double dx = (random_double() - 0.5);
-				double dy = (random_double() - 0.5);
-				double du = dx * dX;
-				double dv = dy * dX;
-				r = m_camera.get_ray(u + du, v + dv);
-				col += ray_col(r, 0);
-			}
-			col /= Config::RAYS_PER_PIXEL;
-			canvas.setPixel(x, y, col);
+	// scope for the channel
+	{
+		auto [tx, rx] = channel<RenderJob>();
+
+		for(int t = 0; t < Config::THREADS; t++) {
+			threads[t] = std::thread([rx, &canvas, this]{
+				std::optional<RenderJob> job;
+				while((job = rx.receive())) {
+					ray r;
+					RenderJob j = job.value();
+					double u = (double)j.x / (double)Config::WIDTH * 2.0 - 1.0;
+					double v = (double)j.y / (double)Config::HEIGHT * 2.0 - 1.0;
+					vec3 col = vec3(0.0, 0.0, 0.0);
+					for (int i = 0; i < Config::RAYS_PER_PIXEL; i++) {
+						double dx = (random_double() - 0.5);
+						double dy = (random_double() - 0.5);
+						double du = dx * 2 / (double)Config::WIDTH;
+						double dv = dy * 2 / (double)Config::HEIGHT;
+						r = m_camera.get_ray(u + du, v + dv);
+						col += ray_col(r, 0);
+					}
+					col /= Config::RAYS_PER_PIXEL;
+					canvas.setPixel(j.x, j.y, col);
+				}
+			});
 		}
+
+		double dX = 2 / (double)Config::WIDTH;
+		double dY = 2 / (double)Config::HEIGHT;
+
+		for (int y = 0; y < Config::HEIGHT; y++) {
+			std::cout << "line " << y << std::endl;
+			for (int x = 0; x < Config::WIDTH; x++) {
+				double u = (double)x / (double)Config::WIDTH * 2.0 - 1.0;
+				double v = (double)y / (double)Config::HEIGHT * 2.0 - 1.0;
+				vec3 col = vec3(0.0, 0.0, 0.0);
+				/*
+				for (int i = 0; i < Config::RAYS_PER_PIXEL; i++) {
+					double dx = (random_double() - 0.5);
+					double dy = (random_double() - 0.5);
+					double du = dx * dX;
+					double dv = dy * dX;
+					r = m_camera.get_ray(u + du, v + dv);
+					col += ray_col(r, 0);
+				}
+				col /= Config::RAYS_PER_PIXEL;
+				canvas.setPixel(x, y, col);
+				*/
+				tx.send(RenderJob{x, y});
+			}
+		}
+	}
+	// channel goes out of scope here, so the receivers will be notified that there is no more data and will exit
+	for(int t = 0; t < Config::THREADS; t++) {
+		threads[t].join();
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "hittable.hpp"
+#include <cmath>
 
 class quad : public hittable {
 public:
