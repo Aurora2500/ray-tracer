@@ -164,6 +164,13 @@ void GLCanvas::update(size_t line_offset, size_t line_count) {
 	unbind();
 }
 
+void GLCanvas::update(size_t x, size_t y, size_t width, size_t height, uint8_t *buf)
+{
+	bind();
+	glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, GL_RGB, GL_UNSIGNED_BYTE, buf);
+	unbind();
+}
+
 GLRenderer::GLRenderer()
 	: m_width(Config::WIDTH), m_height(Config::HEIGHT), m_canvas(Config::WIDTH, Config::HEIGHT)
 {
@@ -255,6 +262,19 @@ void GLRenderer::poll_events()
 bool GLRenderer::should_continue()
 {
 	return !glfwWindowShouldClose(m_window) && glfwGetKey(m_window, GLFW_KEY_ESCAPE) != GLFW_PRESS;
+}
+
+void GLRenderer::add_subscription(RendererSubscription & subscription)
+{
+	subscription.tick += [this]() {
+		if(should_continue()) {
+			m_canvas.update();
+			set_texture(m_canvas.m_glTexture);
+			refresh();
+		} else {
+			exit(0);
+		}
+	};
 }
 
 Canvas &GLRenderer::canvas()

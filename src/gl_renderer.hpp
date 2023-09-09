@@ -15,6 +15,7 @@ public:
 	void unbind();
 	void update();
 	void update(size_t line_offset, size_t line_count);
+	void update(size_t x, size_t y, size_t width, size_t height, uint8_t* buf);
 
 	friend class GLRenderer;
 };
@@ -35,6 +36,8 @@ public:
 	void refresh();
 	void poll_events();
 	bool should_continue();
+
+	void add_subscription(RendererSubscription& subscription) override;
 
 	Canvas& canvas() override;
 

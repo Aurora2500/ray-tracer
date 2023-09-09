@@ -27,13 +27,16 @@ class Sender {
 private:
 	std::shared_ptr<Channel<T>> m_channel;
 public:
-	Sender() = delete;
+	Sender() = default;
 	Sender(std::shared_ptr<Channel<T>> channel)
 		: m_channel(channel)
 	{
 		m_channel->senders.fetch_add(1);
 	}
 	~Sender() {
+		if(!m_channel) {
+			return;
+		}
 		auto last = m_channel->senders.fetch_sub(1);
 		if (last == 1) {
 			// notify all the receivers that there will be no more data
@@ -54,7 +57,7 @@ class Receiver {
 private:
 	std::shared_ptr<Channel<T>> m_channel;
 public:
-	Receiver() = delete;
+	Receiver() = default;
 	Receiver(std::shared_ptr<Channel<T>> channel)
 		: m_channel(channel)
 	{
