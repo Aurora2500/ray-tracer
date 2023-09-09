@@ -1,10 +1,10 @@
 #include "app.hpp"
 #include "camera.hpp"
-#include "png_renderer.hpp"
+#include "gl_renderer.hpp"
 
 int main()
 {
-	PNGRenderer renderer;
-	Application app(std::make_unique<PNGRenderer>(renderer));
+	GLRenderer renderer;
+	Application app(std::make_unique<GLRenderer>(renderer));
 	app.run();
 }

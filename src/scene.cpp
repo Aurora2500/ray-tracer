@@ -2,6 +2,7 @@
 #include "rand.hpp"
 #include "texture.hpp"
 #include "material.hpp"
+#include "quad.hpp"
 #include <cmath>
 
 vec3 Scene::ray_col(const ray &r, int depth) const
@@ -66,6 +67,10 @@ Scene::Scene()
 
 	auto mat3 = std::make_shared<metal>(vec3(0.6, 0.1, 0.6), 0.3);
 	m_world.add(std::make_shared<sphere>(vec3(-4, 0, 1), 1.0, mat3));
+
+	auto left_red = std::make_shared<lambertian>(vec3(1.0, 0.2, 0.2));
+
+	m_world.add(std::make_shared<quad>(vec3(-3, -2, 5), vec3(0, 0, -4), vec3(0, 4, 0), left_red));
 
 	std::cout << "world size: " << m_world.size() << std::endl;
 

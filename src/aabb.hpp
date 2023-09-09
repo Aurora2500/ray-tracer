@@ -16,6 +16,7 @@ public:
 	aabb(const aabb &a, const aabb &b);
 
 	const interval& axis(int n) const;
+	aabb pad();
 
 	bool hit(const ray& r, interval ray_t) const;
 };

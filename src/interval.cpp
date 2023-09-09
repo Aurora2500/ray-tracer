@@ -27,6 +27,14 @@ bool interval::containsClosed(double x) const
 	return min <= x && x <= max;
 }
 
+bool interval::contains(double x) const {
+	return min <= x && x <= max;
+}
+
+double interval::size() const {
+	return max - min;
+}
+
 double interval::clamp(double x) const
 {
 	if (x < min) return min;
