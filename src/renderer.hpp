@@ -9,6 +9,8 @@ class Renderer {
 public:
 	virtual ~Renderer() = default;
 	virtual Canvas& canvas() = 0;
+
+	// This function "finishes" the rendering, in the case of a png renderer it would write it to a file, in the openGL renderer it polls the window in a loop
 	virtual void finish() = 0;
 };
 

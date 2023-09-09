@@ -139,7 +139,7 @@ void GLCanvas::init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_FLOAT, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	unbind();
 }
 
@@ -153,14 +153,14 @@ void GLCanvas::unbind() {
 
 void GLCanvas::update() {
 	bind();
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB, GL_FLOAT, m_buf.data());
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RGB, GL_UNSIGNED_BYTE, m_buf.data());
 	unbind();
 }
 
 void GLCanvas::update(size_t line_offset, size_t line_count) {
 	bind();
-	float *line_buf = m_buf.data() + line_offset * m_width * 3;
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, line_offset, m_width, line_count, GL_RGB, GL_FLOAT, line_buf);
+	uint8_t* line_buf = m_buf.data() + line_offset * m_width * 3;
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, line_offset, m_width, line_count, GL_RGB, GL_UNSIGNED_BYTE, line_buf);
 	unbind();
 }
 
@@ -173,7 +173,7 @@ GLRenderer::GLRenderer()
 	}
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	m_window = glfwCreateWindow(m_width, m_height, "Hello, World!", nullptr, nullptr);
+	m_window = glfwCreateWindow(m_width, m_height, "ray-tracer", nullptr, nullptr);
 	if (m_window == nullptr)
 	{
 		glfwTerminate();
