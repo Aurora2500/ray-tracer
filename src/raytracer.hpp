@@ -15,6 +15,7 @@ public:
 
 	Raytracer(Scene* scene, Canvas* canvas);
 	void render();
+	void tick();
 
 private:
 	

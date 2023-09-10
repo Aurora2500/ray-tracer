@@ -1,4 +1,7 @@
 #include "raytracer.hpp"
+#include "time.hpp"
+
+static bool is_thread_idle[Config::THREADS];
 
 Raytracer::Raytracer(Scene* scene, Canvas* canvas) {
 	m_scene = scene;
@@ -23,7 +26,7 @@ vec3 ray_col(const ray &r, int depth, const hittable_list* world)
 	return vec3();
 }
 
-void worker_routine(hittable_list* world, Camera* camera, Canvas* canvas, std::vector<RenderJob>* jobs, std::mutex* mutex) {
+void worker_routine(hittable_list* world, Camera* camera, Canvas* canvas, std::vector<RenderJob>* jobs, std::mutex* mutex, int thread_index) {
 	RenderJob job;
 
 	while (true) {
@@ -37,7 +40,9 @@ void worker_routine(hittable_list* world, Camera* camera, Canvas* canvas, std::v
 			jobs->pop_back();
 		}
 		else {
+			// If there are no more jobs to be done just leave
 			std::cout << "Finished rendering" << std::endl;
+			is_thread_idle[thread_index] = true;
 			mutex->unlock();
 			return;
 		}
@@ -98,18 +103,33 @@ void Raytracer::render() {
 			rj.x = patch_x;
 			rj.y = patch_y;
 			m_jobs.push_back(rj);
-			std::cout << patch_width << std::endl;
 		}
 	}
 
 	for (int i = 0; i < Config::THREADS; i++) {
-		m_threads[i] = new std::thread(worker_routine, &m_scene->world, &m_scene->camera, m_canvas, &m_jobs, &m_mutex);
+		m_threads[i] = new std::thread(worker_routine, &m_scene->world, &m_scene->camera, m_canvas, &m_jobs, &m_mutex, i);
+		is_thread_idle[i] = false;
 	}
+}
 
+void Raytracer::tick() {
+	m_mutex.lock();
+	for (int i = 0; i < Config::THREADS; i++) {
+		if (!is_thread_idle[i]) {
+			m_mutex.unlock();
+			return;
+		}
+	}
+	m_mutex.unlock();
+
+	// If all threads are idle, then destroy them all(unless you've destroyed them already)
+	if (m_threads == nullptr) {
+		return;
+	}
 	for (int i = 0; i < Config::THREADS; i++) {
 		m_threads[i]->join();
 		delete m_threads[i];
 	}
-
 	delete[] m_threads;
+	m_threads = nullptr;
 }

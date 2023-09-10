@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include "config.hpp"
+#include "time.hpp"
 
 static const GLfloat g_vertex_buffer_data[] = {
 		-1.0f,
@@ -287,11 +288,12 @@ Canvas &GLRenderer::canvas()
 void GLRenderer::finish()
 {
 	m_raytracer.render();
-	m_canvas.update();
-	set_texture(m_canvas.m_glTexture);
 
 	while(should_continue())
 	{
+		m_canvas.update();
+		set_texture(m_canvas.m_glTexture);
+		m_raytracer.tick();
 		refresh();
 	}
 }
