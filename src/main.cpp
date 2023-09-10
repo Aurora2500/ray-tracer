@@ -4,7 +4,6 @@
 
 int main()
 {
-	GLRenderer renderer;
-	Application app(std::make_unique<GLRenderer>(renderer));
+	Application app;
 	app.run();
 }

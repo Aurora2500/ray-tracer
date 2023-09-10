@@ -171,8 +171,9 @@ void GLCanvas::update(size_t x, size_t y, size_t width, size_t height, uint8_t *
 	unbind();
 }
 
-GLRenderer::GLRenderer()
-	: m_width(Config::WIDTH), m_height(Config::HEIGHT), m_canvas(Config::WIDTH, Config::HEIGHT)
+GLRenderer::GLRenderer(Scene* scene)
+	: m_width(Config::WIDTH), m_height(Config::HEIGHT), m_canvas(Config::WIDTH, Config::HEIGHT),
+	m_raytracer(scene, &m_canvas)
 {
 	if (glfwInit() == GLFW_FALSE)
 	{
@@ -285,6 +286,7 @@ Canvas &GLRenderer::canvas()
 
 void GLRenderer::finish()
 {
+	m_raytracer.render();
 	m_canvas.update();
 	set_texture(m_canvas.m_glTexture);
 

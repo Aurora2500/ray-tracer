@@ -2,6 +2,7 @@
 #include <glad.h>
 #include "renderer.hpp"
 #include "canvas.hpp"
+#include "raytracer.hpp"
 
 class GLCanvas : public Canvas {
 private:
@@ -26,11 +27,12 @@ private:
 	GLuint m_vertexbuffer, m_programID;
 	GLFWwindow *m_window;
 	GLCanvas m_canvas;
+	Raytracer m_raytracer;
 	
 	void set_texture(GLuint texID);
 
 public:
-	GLRenderer();
+	GLRenderer(Scene* scene);
 	~GLRenderer();
 
 	void refresh();
