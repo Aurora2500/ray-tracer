@@ -26,17 +26,14 @@ vec3 ray_col(const ray &r, int depth, const hittable_list* world)
 	return vec3();
 }
 
-void worker_routine(hittable_list* world, Camera* camera, Canvas* canvas, std::vector<RenderJob>* jobs, std::mutex* mutex, int thread_index) {
+void worker_routine(hittable_list* world, Camera* camera, Canvas* canvas, std::deque<RenderJob>* jobs, std::mutex* mutex, int thread_index) {
 	RenderJob job;
 
 	while (true) {
 		// Lock the mutex and find a job to do
 		mutex->lock();
 		if (jobs->size() > 0) {
-			// Save the job
-			job = (*jobs)[0];
-			// Remove the job from the list of jobs to be done
-			(*jobs)[0] = jobs->back();
+			job = jobs->back();
 			jobs->pop_back();
 		}
 		else {
@@ -74,35 +71,11 @@ void worker_routine(hittable_list* world, Camera* camera, Canvas* canvas, std::v
 
 void Raytracer::render() {
 	m_threads = new std::thread * [Config::THREADS];
-	const int patch_width = Config::WIDTH / Config::PATCH_SIZE;
-	const int patch_height = Config::HEIGHT / Config::PATCH_SIZE;
-	const int r_w = Config::WIDTH % patch_width;
-	const int r_h = Config::HEIGHT % patch_height;
-
-	for (int y = 0; y < Config::PATCH_SIZE; y++) {
-		for (int x = 0; x < Config::PATCH_SIZE; x++) {
-			const int patch_x = x * patch_width;
-			const int patch_y = y * patch_height;
-
-			RenderJob rj;
-
-			if (x == Config::PATCH_SIZE - 1) {
-				rj.width = patch_width + r_w;
-			}
-			else {
-				rj.width = patch_width;
-			}
-
-			if (y == Config::PATCH_SIZE - 1) {
-				rj.height = patch_height + r_h;
-			}
-			else {
-				rj.height = patch_height;
-			}
-
-			rj.x = patch_x;
-			rj.y = patch_y;
-			m_jobs.push_back(rj);
+	for (int y = 0; y < Config::HEIGHT; y += Config::PATCH_SIZE) {
+		for (int x = 0; x < Config::WIDTH; x += Config::PATCH_SIZE) {
+			int width = std::min(Config::PATCH_SIZE, Config::WIDTH - x);
+			int height = std::min(Config::PATCH_SIZE, Config::HEIGHT - y);
+			m_jobs.push_front({x, y, width, height});
 		}
 	}
 

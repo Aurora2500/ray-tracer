@@ -1,6 +1,7 @@
 #pragma once
 #include "scene.hpp"
 #include "canvas.hpp"
+#include <deque>
 #include <mutex>
 
 struct RenderJob {
@@ -22,7 +23,7 @@ private:
 	Canvas* m_canvas;
 	std::mutex m_mutex;
 	std::thread** m_threads;
-	std::vector<RenderJob> m_jobs;
+	std::deque<RenderJob> m_jobs;
 	Scene* m_scene;
 
 };
