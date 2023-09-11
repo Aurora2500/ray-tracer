@@ -75,7 +75,7 @@ void Raytracer::render() {
 		for (int x = 0; x < Config::WIDTH; x += Config::PATCH_SIZE) {
 			int width = std::min(Config::PATCH_SIZE, Config::WIDTH - x);
 			int height = std::min(Config::PATCH_SIZE, Config::HEIGHT - y);
-			m_jobs.push_front({x, y, width, height});
+			m_jobs.push_back({x, y, width, height});
 		}
 	}
 

@@ -8,5 +8,5 @@ namespace Config {
 	const int MAX_DEPTH = 50;
 	//const int THREADS = std::thread::hardware_concurrency();
 	const int THREADS = 12;
-	const int PATCH_SIZE = 10;
+	const int PATCH_SIZE = 120;
 }
